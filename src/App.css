@@ -1,0 +1,5 @@
+@import './assets/styles/layout.css';
+@import './components/Hero/hero.css';
+@import './components/Calendar/calendar.css';
+@import './components/Notes/notes.css';
+

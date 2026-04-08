@@ -1,0 +1,271 @@
+@import url('https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Londrina+Outline&display=swap');
+
+.calendar-viewport.wide {
+  position: relative;
+  width: min(450px, 96vw);
+  height: min(580px, 96vh);
+  perspective: 2500px;
+}
+
+.blue-bg {
+  background-color: var(--season-bg, #2d5a88) !important;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.page {
+  position: absolute;
+  inset: 0;
+  transform-origin: top center;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 20px 40px rgb(0 0 0 / 40%);
+  overflow: hidden;
+}
+
+.static-page {
+  z-index: 9;
+}
+
+.flipping-page {
+  z-index: 20;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+.page-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+}
+
+.flipped-back {
+  transform: rotateX(180deg);
+  background: #ccc;
+  backface-visibility: hidden;
+}
+
+.hole-row {
+  position: absolute;
+  top: 12px;
+  width: 100%;
+  height: 15px;
+  background-image: radial-gradient(circle, #111 40%, transparent 45%);
+  background-size: 33px 100%;
+  background-position: 15px center;
+  background-repeat: repeat-x;
+  z-index: 5;
+}
+
+.hand-text {
+  font-family: 'Gochi Hand', cursive;
+  margin: 0;
+  color: #2d4262;
+}
+
+.month-title {
+  font-size: 1.8rem;
+}
+
+.inner-page {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  --cell-h: 38px;
+  --row-gap: 5px;
+  padding-bottom: 14px;
+  box-sizing: border-box;
+}
+
+.layout-header {
+  display: flex;
+  align-items: flex-end;
+  margin-top: 15px;
+  margin-bottom: 5px;
+}
+
+.notes-header {
+  width: 90px;
+  color: var(--season-contrast, #fefef1);
+  font-size: 1.1rem;
+  text-align: center;
+  padding-bottom: 5px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.notes-header-mobile {
+  display: none;
+}
+
+.notes-column {
+  width: 90px;
+}
+
+.grid-with-notes-wrapper {
+  position: relative;
+  display: flex;
+  gap: 10px;
+  flex: 1;
+  min-height: 0;
+}
+
+.year-input,
+.month-input {
+  width: auto;
+  min-width: 4ch;
+  background: transparent;
+  border: none;
+  border-bottom: 2px dashed var(--season-accent, #b34b3d);
+  color: var(--season-accent, #b34b3d);
+  font-size: 1.8rem;
+  font-family: inherit;
+  outline: none;
+}
+
+.year-input {
+  text-align: center;
+}
+
+.month-input {
+  text-transform: uppercase;
+}
+
+.year-input::-webkit-outer-spin-button,
+.year-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.year-input {
+  -moz-appearance: textfield;
+}
+
+.spiral-svg {
+  position: absolute;
+  top: -55px;
+  width: 100%;
+  height: 120px;
+  pointer-events: none;
+}
+
+.spiral-svg.back {
+  z-index: 1;
+}
+
+.calendar-stack {
+  z-index: 10;
+  height: 100%;
+  position: relative;
+}
+
+.spiral-svg.front {
+  z-index: 100;
+}
+
+.c-top-outside,
+.c-bottom-outside {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 48px;
+  z-index: 220;
+  cursor: pointer;
+}
+
+.c-top-outside {
+  top: -48px;
+}
+
+.c-bottom-outside {
+  bottom: -48px;
+}
+
+.main-calendar-container {
+  overflow: hidden;
+}
+
+@media (max-width: 640px) {
+  .main-calendar-container {
+    align-items: flex-start !important;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-top: 65px;
+    padding-bottom: 65px;
+  }
+
+  .calendar-viewport.wide {
+    width: min(450px, 98vw);
+    height: 760px;
+    flex-shrink: 0;
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+
+  .blue-bg {
+    padding: 10px;
+  }
+
+  .layout-header {
+    align-items: flex-end;
+    margin-top: 12px;
+  }
+
+  .notes-header {
+    display: none;
+  }
+
+  .inner-page {
+    --cell-h: 32px;
+    --row-gap: 4px;
+  }
+
+  .grid-with-notes-wrapper {
+    flex-direction: column;
+    gap: 20px;
+    flex: none;
+  }
+
+  .hand-grid {
+    order: 1;
+    flex: none;
+  }
+
+  .notes-column {
+    order: 2;
+    width: 100%;
+    flex: none;
+  }
+
+  .notes-header-mobile {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 6px;
+    color: var(--season-contrast, #fefef1);
+    font-size: 1rem;
+    margin-bottom: 4px;
+  }
+
+  .chunky-note-cell,
+  .cell {
+    height: var(--cell-h);
+    min-height: var(--cell-h);
+  }
+
+  .notes-textarea-mini {
+    line-height: calc(var(--cell-h) + var(--row-gap)) !important;
+    font-size: 0.95rem !important;
+    padding: 0 4px !important;
+  }
+
+  .day-active {
+    font-size: 1.5rem;
+  }
+}
+

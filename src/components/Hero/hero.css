@@ -1,0 +1,321 @@
+.canvas-space-wrapper {
+  filter: drop-shadow(2px 2px 0 var(--season-accent, #b34b3d)) drop-shadow(-2px -2px 0 var(--season-accent, #b34b3d)) drop-shadow(2px -2px 0 var(--season-accent, #b34b3d)) drop-shadow(-2px 2px 0 var(--season-accent, #b34b3d));
+  margin-top: 25px;
+  position: relative;
+}
+
+.canvas-space {
+  height: 200px;
+  width: 100%;
+  background: var(--season-paper, #fefef1);
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 21% 100%, 21% 72%, 0% 72%);
+  position: relative;
+  overflow: hidden;
+}
+
+.canvas-notes-lines {
+  display: flex;
+  flex-direction: column;
+  padding: 5px 10px;
+  height: 100%;
+}
+
+.canvas-note-line {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgb(var(--season-accent-rgb, 179 75 61) / 10%);
+}
+
+.title-banner {
+  position: absolute;
+  left: 15px;
+  top: 140px;
+  background: var(--season-paper, #fefef1);
+  border: 3px solid var(--season-accent, #b34b3d);
+  display: inline-block;
+  padding: 0 15px;
+  transform: rotate(-1.5deg);
+  z-index: 100;
+  box-shadow: 3px 3px 0 rgb(0 0 0 / 10%);
+}
+
+.thought-bubble {
+  position: absolute;
+  left: -15px;
+  top: -10px;
+  background: var(--season-paper, #fefef1);
+  border: 2px solid var(--season-accent, #b34b3d);
+  padding: 8px 12px;
+  z-index: 150;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 3px 3px 0 rgb(0 0 0 / 10%);
+  max-width: 120px;
+  user-select: none;
+  cursor: grab;
+}
+
+.bubble-text {
+  font-family: 'Gochi Hand', cursive;
+  font-size: 0.9rem;
+  color: var(--season-accent, #b34b3d);
+  text-align: center;
+  line-height: 1.1;
+}
+
+.oval {
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  transform: rotate(-5deg);
+}
+
+.cloud {
+  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  transform: rotate(3deg);
+}
+
+.round {
+  border-radius: 50%;
+  transform: rotate(-10deg);
+}
+
+.wobbly {
+  border-radius: 20% 80% 30% 70% / 60% 40% 60% 40%;
+  transform: rotate(7deg);
+}
+
+.bubble-tail {
+  position: absolute;
+  bottom: -12px;
+  left: 25px;
+  width: 12px;
+  height: 12px;
+  background: var(--season-paper, #fefef1);
+  border-right: 2px solid var(--season-accent, #b34b3d);
+  border-bottom: 2px solid var(--season-accent, #b34b3d);
+  border-radius: 0 0 100% 0;
+  transform: rotate(35deg);
+}
+
+.thought-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -18px;
+  left: 20px;
+  width: 6px;
+  height: 6px;
+  background: var(--season-paper, #fefef1);
+  border: 2px solid var(--season-accent, #b34b3d);
+  border-radius: 50%;
+}
+
+.canvas-tools {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  z-index: 260;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  background: rgb(254 254 241 / 92%);
+  border: 1px dashed var(--season-accent, #b34b3d);
+  border-radius: 6px;
+  padding: 3px 4px;
+  width: 56px;
+  margin-top: 6px;
+}
+
+.canvas-doodle {
+  position: absolute;
+  left: 8px;
+  top: 42px;
+  width: 80px;
+  height: 80px;
+  cursor: pointer;
+  z-index: 80;
+  transition: fill 0.3s ease, transform 0.2s ease;
+  user-select: none;
+  cursor: grab;
+}
+
+.canvas-doodle:hover {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.canvas-doodle path {
+  transition: fill 0.5s ease;
+}
+
+.doodle-draw-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 60;
+  cursor: crosshair;
+}
+
+.doodle-hint {
+  font-family: 'Gochi Hand', cursive;
+  font-size: 8px;
+  fill: var(--season-accent, #b34b3d);
+  opacity: 0.4;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.palette-row {
+  display: flex;
+  gap: 2px;
+  flex-wrap: wrap;
+  margin-top: 1px;
+  margin-bottom: 1px;
+}
+
+.palette-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid rgb(0 0 0 / 35%);
+  cursor: pointer;
+  padding: 0;
+}
+
+.palette-dot.selected {
+  transform: scale(1.15);
+  box-shadow: 0 0 0 1px #fff, 0 0 0 2px var(--season-accent, #b34b3d);
+}
+
+.upload-btn {
+  position: relative;
+  overflow: hidden;
+  font-size: 0.5rem;
+  color: var(--season-accent, #b34b3d);
+  border: 1px solid var(--season-accent, #b34b3d);
+  border-radius: 7px;
+  padding: 1px 3px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.camera-icon {
+  font-size: 0.56rem;
+  line-height: 1;
+}
+
+.upload-btn input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.size-slider {
+  width: 100%;
+  accent-color: var(--season-accent, #b34b3d);
+  height: 10px;
+}
+
+.canvas-upload-image {
+  position: absolute;
+  z-index: 30;
+  border: 1px dashed var(--season-accent, #b34b3d);
+  border-radius: 4px;
+  cursor: move;
+  user-select: none;
+}
+
+.canvas-upload-image.active-image {
+  box-shadow: 0 0 0 2px rgb(var(--season-accent-rgb, 179 75 61) / 40%);
+}
+
+.tool-mode-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tool-btn,
+.remove-pic-btn {
+  border: 1px dashed var(--season-accent, #b34b3d);
+  border-radius: 6px;
+  background: #fff4e7;
+  color: var(--season-accent, #b34b3d);
+  font-size: 0.48rem;
+  line-height: 1.1;
+  padding: 1px 2px;
+  cursor: pointer;
+}
+
+.tool-btn.active {
+  background: var(--season-accent, #b34b3d);
+  color: var(--season-paper, #fefef1);
+}
+
+.canvas-holiday-list {
+  position: absolute;
+  top: 12%;
+  right: 5%;
+  width: 148px;
+  max-height: 182px;
+  background: #fff6d9;
+  padding: 8px 9px;
+  box-shadow: 3px 5px 0 rgb(var(--season-accent-rgb, 179 75 61) / 18%);
+  border-radius: 8px;
+  transform: rotate(1.2deg);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  border: 2px dashed rgb(var(--season-accent-rgb, 179 75 61) / 45%);
+}
+
+.holiday-list-title {
+  font-size: 0.78rem;
+  font-weight: bold;
+  color: var(--season-accent, #b34b3d);
+  margin-bottom: 6px;
+  text-align: center;
+  border-bottom: 1px dashed rgb(var(--season-accent-rgb, 179 75 61) / 40%);
+  letter-spacing: 0.3px;
+}
+
+.holiday-scroll-area {
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.holiday-scroll-area::-webkit-scrollbar {
+  display: none;
+}
+
+.holiday-item {
+  display: flex;
+  gap: 7px;
+  font-size: 0.72rem;
+  margin-top: 5px;
+  color: #394a63;
+  align-items: baseline;
+}
+
+.holiday-date {
+  font-weight: bold;
+  color: var(--season-accent, #b34b3d);
+  min-width: 16px;
+}
+
+.holiday-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tool-size-label {
+  font-size: 0.48rem;
+  color: var(--season-accent, #b34b3d);
+  text-align: center;
+}
+

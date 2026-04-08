@@ -1,0 +1,169 @@
+.days-row {
+  flex-grow: 1;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  column-gap: 0;
+  color: var(--season-contrast, #fff);
+  font-family: 'Gochi Hand', cursive;
+  text-align: center;
+  font-size: 1.05rem;
+  padding-left: 10px;
+}
+
+.hand-grid {
+  flex-grow: 1;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  column-gap: 0;
+  row-gap: var(--row-gap, 5px);
+  align-content: start;
+  min-height: 0;
+}
+
+.cell {
+  height: var(--cell-h, 38px);
+  min-height: var(--cell-h, 38px);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.day-active {
+  background: var(--season-paper, #fefef1);
+  border: 1px solid var(--season-accent, #b34b3d);
+  font-family: 'Londrina Outline', cursive;
+  font-size: 1.9rem;
+  font-weight: 950;
+  color: var(--season-accent, #b34b3d);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.day-other-month {
+  background: transparent;
+  border: none;
+  cursor: default;
+  user-select: none;
+}
+
+.day-other-month-number {
+  font-family: 'Gochi Hand', cursive;
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: color-mix(in srgb, var(--season-contrast, #fff) 62%, var(--season-accent, #b34b3d) 38%);
+  opacity: 0.72;
+}
+
+.day-active.active,
+.day-active:not(.highlight):hover {
+  background: color-mix(in srgb, var(--season-accent, #b34b3d) 18%, var(--season-paper, #fefef1));
+  transform: scale(1.06) rotate(-1.5deg);
+  z-index: 2;
+  box-shadow: 2px 3px 0 rgba(0, 0, 0, 0.08);
+}
+
+.day-active.highlight {
+  background: var(--season-accent, #b34b3d);
+  color: #111827;
+}
+
+.day-active.range-selected {
+  background: color-mix(in srgb, var(--season-accent, #b34b3d) 15%, var(--season-paper, #fefef1));
+}
+
+.day-number-with-marker {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.saved-note-markers {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: inline-grid;
+  place-items: center;
+  gap: 2px;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.saved-note-marker {
+  width: 21px;
+  height: 18px;
+  position: absolute;
+  display: inline-block;
+  border-color: rgba(45, 66, 98, 0.9);
+  opacity: 0.92;
+}
+
+.saved-note-marker.loop {
+  border: 2px solid rgba(45, 66, 98, 0.9);
+  border-radius: 56% 44% 54% 46%;
+  transform: rotate(-12deg) translate(-1px, 0);
+}
+
+.saved-note-marker.double-loop {
+  border: 1.5px dashed rgba(45, 66, 98, 0.88);
+  border-radius: 48% 52% 50% 50%;
+  transform: rotate(10deg) scale(0.93);
+  box-shadow: 0 0 0 1px rgba(45, 66, 98, 0.2);
+}
+
+.saved-note-marker.swirl {
+  border: 2px solid rgba(45, 66, 98, 0.9);
+  border-right-color: transparent;
+  border-radius: 50% 50% 46% 54%;
+  transform: rotate(24deg) scale(0.82);
+}
+
+.saved-note-marker.underline {
+  width: 19px;
+  height: 18px;
+  border: none;
+  border-bottom: 2px solid rgba(45, 66, 98, 0.95);
+  transform: translateY(8px) rotate(-4deg);
+}
+
+.saved-note-marker.burst {
+  width: 16px;
+  height: 16px;
+  transform: scale(0.78) translateY(-1px) rotate(-8deg);
+}
+
+.saved-note-marker.burst::before,
+.saved-note-marker.burst::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 9px;
+  height: 1.8px;
+  background: #2d4262;
+  border-radius: 2px;
+  transform: translate(-50%, -50%) rotate(42deg);
+}
+
+.saved-note-marker.burst::after {
+  width: 8px;
+  transform: translate(-48%, -52%) rotate(-51deg);
+}
+
+.saved-note-count {
+  position: absolute;
+  right: -14px;
+  bottom: -10px;
+  font-size: 0.52rem;
+  color: #2d4262;
+  font-family: 'Gochi Hand', cursive;
+  background: var(--season-paper, #fefef1);
+  border: 1px solid rgba(45, 66, 98, 0.5);
+  border-radius: 8px;
+  padding: 0 3px;
+  line-height: 1.1;
+}
+
