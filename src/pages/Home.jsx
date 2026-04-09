@@ -1,5 +1,4 @@
 import React from 'react';
-import { Container } from 'react-bootstrap';
 import { useAppContext } from '../context/AppContext';
 import { runFlipAnimation } from '../animations/calendarAnimations';
 import HeroCanvas from '../components/Hero/HeroCanvas';
@@ -40,6 +39,7 @@ const Home = () => {
     saveSelectedNote,
     currentSeasonTheme,
   } = useAppContext();
+  const currentMonth = months[currentMonthIndex];
 
   const handleFlip = (direction) => {
     if (isFlipping) return;
@@ -60,7 +60,7 @@ const Home = () => {
   };
 
   return (
-    <Container fluid className="d-flex align-items-center justify-content-center vh-100 bg-dark main-calendar-container">
+    <div className="d-flex align-items-center justify-content-center vh-100 bg-dark main-calendar-container">
       <div
         className="calendar-viewport wide"
         style={{
@@ -115,7 +115,7 @@ const Home = () => {
       {notesModal.open && (
         <div className="notes-modal-backdrop" onClick={() => setNotesModal({ open: false, day: null, notes: [] })}>
           <div className="notes-modal-card" onClick={(event) => event.stopPropagation()}>
-            <div className="notes-modal-title hand-text">Notes on {months[currentMonthIndex].name} {notesModal.day}</div>
+            <div className="notes-modal-title hand-text">Notes on {currentMonth?.name || 'MONTH'} {notesModal.day}</div>
             <div className="notes-modal-list">
               {notesModal.notes.length > 0
                 ? notesModal.notes.map((note) => (
@@ -130,9 +130,8 @@ const Home = () => {
           </div>
         </div>
       )}
-    </Container>
+    </div>
   );
 };
 
 export default Home;
-

@@ -1,10 +1,10 @@
-# Calendar notebook (React)
+# Interactive-Calendar
 
 Small desk-calendar style app: flip months, scribble notes on dates, doodle on the top “paper,” India holidays in the corner. No server — everything sits in the browser.
 
-**Live:** *(your link)*  
+**Live:** * https://interactive-calendarr.vercel.app/ *  
 **Video walkthrough:** *(your link)*  
-**Repo:** *(optional)*
+
 
 ---
 
@@ -51,4 +51,4 @@ Tests on the date helpers, better a11y (keyboard + reduced motion for the flip),
 
 ---
 
-Built this as a portfolio piece — if something’s unclear, open an issue or ask in the video. Cheers.
+
