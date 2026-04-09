@@ -3,7 +3,11 @@
 Small desk-calendar style app: flip months, scribble notes on dates, doodle on the top “paper,” India holidays in the corner. No server — everything sits in the browser.
 
 **Live:** * https://interactive-calendarr.vercel.app/ *  
-**Video walkthrough:** *(your link)*  
+**Video walkthrough:** 
+
+https://github.com/user-attachments/assets/d3a3c8f9-f143-4a27-b627-b5902f641f70
+
+  
 
 
 ---
