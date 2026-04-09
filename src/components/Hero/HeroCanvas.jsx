@@ -104,9 +104,19 @@ const HeroCanvas = () => {
     });
   };
 
+  const getClientPoint = (event) => {
+    if ('clientX' in event && 'clientY' in event) {
+      return { x: event.clientX, y: event.clientY };
+    }
+    const touch = event.touches?.[0] || event.changedTouches?.[0];
+    return touch ? { x: touch.clientX, y: touch.clientY } : null;
+  };
+
   const getCanvasPoint = (event) => {
+    const point = getClientPoint(event);
+    if (!point) return null;
     const rect = drawCanvasRef.current.getBoundingClientRect();
-    return { x: event.clientX - rect.left, y: event.clientY - rect.top };
+    return { x: point.x - rect.left, y: point.y - rect.top };
   };
 
   const clampToRect = (value, min, max) => Math.min(Math.max(value, min), max);
@@ -121,15 +131,18 @@ const HeroCanvas = () => {
 
   const beginDraw = (event) => {
     if (!canDraw) return;
+    event.preventDefault();
     isDrawingRef.current = true;
     lastPointRef.current = getCanvasPoint(event);
   };
 
   const draw = (event) => {
     if (!canDraw || !isDrawingRef.current) return;
+    event.preventDefault();
     const canvas = drawCanvasRef.current;
     const ctx = canvas.getContext('2d');
     const p = getCanvasPoint(event);
+    if (!p) return;
     const prev = lastPointRef.current || p;
     const doodleRect = doodleRef.current?.getBoundingClientRect();
     const canvasRect = canvas.getBoundingClientRect();
@@ -191,20 +204,22 @@ const HeroCanvas = () => {
 
   const beginImageDrag = (event, image) => {
     if (brushTool !== 'move') return;
+    const point = getClientPoint(event);
+    if (!point) return;
     setSelectedImageId(image.id);
     bindDrag({
-      onMove: (moveEvent, dragState) => {
+      onMove: (movePoint, dragState) => {
         if (!dragState) return;
         updateScene((current) => ({
           ...current,
           images: current.images.map((img) => (
             img.id === image.id
-              ? { ...img, x: Math.max(0, moveEvent.clientX - dragState.offsetX), y: Math.max(0, moveEvent.clientY - dragState.offsetY) }
+              ? { ...img, x: Math.max(0, movePoint.x - dragState.offsetX), y: Math.max(0, movePoint.y - dragState.offsetY) }
               : img
           )),
         }));
       },
-    })(event, { offsetX: event.clientX - image.x, offsetY: event.clientY - image.y });
+    })(event, { offsetX: point.x - image.x, offsetY: point.y - image.y });
   };
 
   return (
@@ -213,13 +228,15 @@ const HeroCanvas = () => {
         ref={bubbleRef}
         className={`thought-bubble ${monthData.bubbleType}`}
         style={{ left: `${scene.bubble.x}px`, top: `${scene.bubble.y}px` }}
-        onMouseDown={(event) => {
+        onPointerDown={(event) => {
           if (brushTool !== 'move') return;
+          const point = getClientPoint(event);
+          if (!point) return;
           bindDrag({
-            onMove: (moveEvent, dragState) => {
+            onMove: (movePoint, dragState) => {
               const next = clampElementPosition(
-                moveEvent.clientX - dragState.offsetX,
-                moveEvent.clientY - dragState.offsetY,
+                movePoint.x - dragState.offsetX,
+                movePoint.y - dragState.offsetY,
                 wrapperRef.current?.getBoundingClientRect(),
                 bubbleRef.current?.getBoundingClientRect()
               );
@@ -231,7 +248,7 @@ const HeroCanvas = () => {
                 },
               }));
             },
-          })(event, { offsetX: event.clientX - scene.bubble.x, offsetY: event.clientY - scene.bubble.y });
+          })(event, { offsetX: point.x - scene.bubble.x, offsetY: point.y - scene.bubble.y });
         }}
       >
         <span className="bubble-text">{monthData.quote}</span>
@@ -338,10 +355,11 @@ const HeroCanvas = () => {
           ref={drawCanvasRef}
           className="doodle-draw-canvas"
           style={{ pointerEvents: canDraw ? 'auto' : 'none' }}
-          onMouseDown={beginDraw}
-          onMouseMove={draw}
-          onMouseUp={endDraw}
-          onMouseLeave={endDraw}
+          onPointerDown={beginDraw}
+          onPointerMove={draw}
+          onPointerUp={endDraw}
+          onPointerLeave={endDraw}
+          onPointerCancel={endDraw}
         />
 
         {scene.images.map((img) => (
@@ -350,7 +368,7 @@ const HeroCanvas = () => {
             imageState={img}
             isActive={img.id === selectedImage?.id}
             onSelect={() => setSelectedImageId(img.id)}
-            onMouseDown={(event) => beginImageDrag(event, img)}
+            onPointerDown={(event) => beginImageDrag(event, img)}
           />
         ))}
 
@@ -359,13 +377,15 @@ const HeroCanvas = () => {
           className="canvas-doodle"
           viewBox="0 0 100 100"
           style={{ left: `${scene.doodle.x}px`, top: `${scene.doodle.y}px` }}
-          onMouseDown={(event) => {
+          onPointerDown={(event) => {
             if (brushTool !== 'move') return;
+            const point = getClientPoint(event);
+            if (!point) return;
             bindDrag({
-              onMove: (moveEvent, dragState) => {
+              onMove: (movePoint, dragState) => {
                 const next = clampElementPosition(
-                  moveEvent.clientX - dragState.offsetX,
-                  moveEvent.clientY - dragState.offsetY,
+                  movePoint.x - dragState.offsetX,
+                  movePoint.y - dragState.offsetY,
                   canvasSpaceRef.current?.getBoundingClientRect(),
                   doodleRef.current?.getBoundingClientRect()
                 );
@@ -377,7 +397,7 @@ const HeroCanvas = () => {
                   },
                 }));
               },
-            })(event, { offsetX: event.clientX - scene.doodle.x, offsetY: event.clientY - scene.doodle.y });
+            })(event, { offsetX: point.x - scene.doodle.x, offsetY: point.y - scene.doodle.y });
           }}
           onClick={() => {
             if (brushTool === 'move') return;
@@ -405,18 +425,20 @@ const HeroCanvas = () => {
               ...(scene.holiday.x !== null ? { left: `${scene.holiday.x}px`, top: `${scene.holiday.y}px`, right: 'auto' } : {}),
               cursor: brushTool === 'move' ? 'grab' : 'default',
             }}
-            onMouseDown={(event) => {
+            onPointerDown={(event) => {
               if (brushTool !== 'move') return;
+              const point = getClientPoint(event);
+              if (!point) return;
               const boxRect = event.currentTarget.getBoundingClientRect();
               const canvasRect = canvasSpaceRef.current.getBoundingClientRect();
               const currentX = scene.holiday.x !== null ? scene.holiday.x : (boxRect.left - canvasRect.left);
               const currentY = scene.holiday.y !== null ? scene.holiday.y : (boxRect.top - canvasRect.top);
 
               bindDrag({
-                onMove: (moveEvent, dragState) => {
+                onMove: (movePoint, dragState) => {
                   const next = clampElementPosition(
-                    moveEvent.clientX - dragState.offsetX,
-                    moveEvent.clientY - dragState.offsetY,
+                    movePoint.x - dragState.offsetX,
+                    movePoint.y - dragState.offsetY,
                     canvasSpaceRef.current?.getBoundingClientRect(),
                     document.querySelector('.canvas-holiday-list')?.getBoundingClientRect()
                   );
@@ -428,7 +450,7 @@ const HeroCanvas = () => {
                     },
                   }));
                 },
-              })(event, { offsetX: event.clientX - currentX, offsetY: event.clientY - currentY });
+              })(event, { offsetX: point.x - currentX, offsetY: point.y - currentY });
             }}
           >
             <div className="holiday-list-title hand-text">India Holidays</div>
@@ -479,4 +501,3 @@ const HeroCanvas = () => {
 };
 
 export default HeroCanvas;
-

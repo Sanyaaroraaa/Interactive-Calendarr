@@ -1,6 +1,6 @@
 import React from 'react';
 
-const DraggableItem = ({ imageState, onMouseDown, onSelect, isActive }) => {
+const DraggableItem = ({ imageState, onPointerDown, onSelect, isActive }) => {
   if (!imageState) return null;
   return (
     <img
@@ -13,11 +13,10 @@ const DraggableItem = ({ imageState, onMouseDown, onSelect, isActive }) => {
         top: `${imageState.y}px`,
         transform: `rotate(${imageState.rotation || 0}deg)`,
       }}
-      onMouseDown={onMouseDown}
+      onPointerDown={onPointerDown}
       onClick={onSelect}
     />
   );
 };
 
 export default DraggableItem;
-

@@ -11,6 +11,7 @@
   clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 21% 100%, 21% 72%, 0% 72%);
   position: relative;
   overflow: hidden;
+  touch-action: none;
 }
 
 .canvas-notes-lines {
@@ -55,6 +56,7 @@
   max-width: 120px;
   user-select: none;
   cursor: grab;
+  touch-action: none;
 }
 
 .bubble-text {
@@ -137,6 +139,7 @@
   transition: fill 0.3s ease, transform 0.2s ease;
   user-select: none;
   cursor: grab;
+  touch-action: none;
 }
 
 .canvas-doodle:hover {
@@ -154,6 +157,7 @@
   height: 100%;
   z-index: 60;
   cursor: crosshair;
+  touch-action: none;
 }
 
 .doodle-hint {
@@ -227,6 +231,7 @@
   border-radius: 4px;
   cursor: move;
   user-select: none;
+  touch-action: none;
 }
 
 .canvas-upload-image.active-image {
@@ -271,6 +276,7 @@
   display: flex;
   flex-direction: column;
   border: 2px dashed rgb(var(--season-accent-rgb, 179 75 61) / 45%);
+  touch-action: none;
 }
 
 .holiday-list-title {
@@ -318,4 +324,3 @@
   color: var(--season-accent, #b34b3d);
   text-align: center;
 }
-
